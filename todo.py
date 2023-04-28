@@ -1,9 +1,20 @@
 import sys
 import os
+import site
+
+site_packages = site.getsitepackages()
+
+for site_package in site_packages:
+    pyqt5_path = os.path.join(site_package, "PyQt5")
+    if os.path.isdir(pyqt5_path):
+        sys.path.append(pyqt5_path)
+        break
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout,
                              QLabel, QLineEdit, QListWidget, QCheckBox,
                              QPushButton, QListWidgetItem, QInputDialog)
+
 
 class TodoList(QWidget):
     def __init__(self):
