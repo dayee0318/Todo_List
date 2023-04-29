@@ -15,7 +15,6 @@ from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout,
                              QLabel, QLineEdit, QListWidget, QCheckBox,
                              QPushButton, QListWidgetItem, QInputDialog)
 
-
 class TodoList(QWidget):
     def __init__(self):
         super().__init__()
@@ -48,13 +47,25 @@ class TodoList(QWidget):
             with open(todo_file, 'r') as f:
                 todos = f.read().splitlines()
             for todo in todos:
-                self.add_checkbox(todo.strip())
+                todo_text, checked = todo.split("||")  # 변경
+                self.add_checkbox(todo_text.strip(), checked == "True")  # 변경
+                print(f"Loaded todo: {todo_text.strip()}")  # 추가
 
     def save_todos(self):
         home = os.path.expanduser("~")
         todo_file = os.path.join(home, 'todos.txt')
         with open(todo_file, 'w') as f:
-            f.write('\n'.join([self.todo_list.item(i).text() for i in range(self.todo_list.count())]))
+            todos = []
+            for i in range(self.todo_list.count()):
+                item = self.todo_list.item(i)
+                widget = self.todo_list.itemWidget(item)
+                if widget:
+                    layout = widget.layout()
+                    for j in range(layout.count()):
+                        checkbox = layout.itemAt(j).widget()
+                        if isinstance(checkbox, QCheckBox):
+                            todos.append(f"{checkbox.text()}||{checkbox.isChecked()}")  # 변경
+            f.write('\n'.join(todos))
 
     def add_todo(self):
         todo = self.todo_input.text()
@@ -63,8 +74,9 @@ class TodoList(QWidget):
             self.todo_input.clear()
             self.save_todos()
 
-    def add_checkbox(self, todo):
+    def add_checkbox(self, todo, checked=False):  # 변경
         checkbox = QCheckBox(todo)
+        checkbox.setChecked(checked)  # 변경
         checkbox.stateChanged.connect(self.save_todos)
 
         delete_button = QPushButton('-')
@@ -89,6 +101,7 @@ class TodoList(QWidget):
             if widget and widget.layout().indexOf(button) != -1:
                 self.todo_list.takeItem(i)
                 self.save_todos()
+                i -= 1  # 인덱스 감소
                 break
 
     def edit_todo(self, item):
@@ -103,6 +116,11 @@ class TodoList(QWidget):
                         checkbox.setText(new_text.strip())
                         self.save_todos()
                         break
+
+    def closeEvent(self, event):
+        self.save_todos()
+        event.accept()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
