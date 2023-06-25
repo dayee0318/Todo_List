@@ -1,34 +1,33 @@
 # Todo List Application
 
-A simple Todo List application built with Python and PyQt5.
+This repository contains the code for a simple Todo List application built using Python and PyQt5. The application lets you add, edit, and delete items on a todo list.
 
 ## Features
-- Add, edit, and delete todo items
-- Save todo items to a local file
-- Checkbox for marking tasks as complete
-- Double-click to edit a task
-- Delete tasks with the delete button
+- **Add Todo**: Add new items to the list.
+- **Edit Todo**: Double click on any item in the list to edit it (in the empty space).
+- **Delete Todo**: Click on the '-' button next to any todo item to delete it.
+- **Persistence**: The application stores todo list items on disk in a `todos.txt` file located in the user's home directory. These items are loaded back into the application on startup.
 
-## Requirements
+## Prerequisites
 
 - Python 3.x
 - PyQt5
 
-## Installation
+The script at the beginning of the code ensures that the PyQt5 module is properly imported from your site-packages directory.
 
-1. Install Python 3.x from [Python.org](https://www.python.org/downloads/)
+## How to Run
 
-2. Install PyQt5 using pip:
+1. Ensure that you have the necessary prerequisites installed.
 
-```bash
-pip install PyQt5
-```
+2. Clone the repository or download the `todo_list.py` file.
 
-## Running the Application
-1. Clone this repository or download the source code.
+3. Run the script with the following command:
+    ```
+    python3 todo_list.py
+    ```
 
-2. Open a terminal or command prompt, navigate to the directory containing todo_list.py, and run the following command: 
-```bash 
-python todo.py
-```
-3. The Todo List application should launch, and you can begin using it to manage your tasks.
+4. The application window will appear, and you can start using the Todo List application.
+
+## Application Screenshot
+![Application Screenshot](screenshot.png)
+
